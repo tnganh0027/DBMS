@@ -1,0 +1,109 @@
+\documentclass[12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[utf8]{vietnam}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{tabu}
+\usepackage{indentfirst}
+\usepackage{array}
+\setlength{\parindent}{2em}
+\renewcommand{\baselinestretch}{1.5}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.pathmorphing}
+\usepackage{subcaption}
+\usepackage{verbatim} 
+
+
+%\renewcommand{\familydefault}{\sfdefault}
+
+
+%
+%\title{LaTex Thesis Template}	%% title
+%\author{Trương Ngọc Anh}			%% author's name
+
+%
+\newcommand{\argmax}{\arg\!\max}
+
+\begin{document}
+\begin{titlepage}
+\begin{tikzpicture}[overlay,remember picture]
+    \draw [line width=0.5mm,decorate,decoration={
+        %,segment length=<length>,amplitude=<length>
+        }]
+        ($ (current page.north west) + (3cm,-3cm) $)
+        rectangle
+        ($ (current page.south east) + (-3cm,3cm) $);
+\end{tikzpicture}
+\begin{center}
+	\textbf{ĐẠI HỌC QUỐC GIA TP.HỒ CHÍ MINH}\\
+	TRƯỜNG ĐẠI HỌC BÁCH KHOA\\
+	KHOA KHOA HỌC VÀ KỸ THUẬT MÁY TÍNH\\
+	---------------o0o--------------- \\
+	\vspace{5mm}
+	\includegraphics[scale=0.2]{charts/logo.png}
+\end{center}
+\vspace{5mm}
+
+\begin{center}
+	\textbf{\small HỆ QUẢN TRỊ CƠ SỞ DỮ LIỆU}\\
+	\textbf{\large Document Store (MongoDB, CouchDB, SimpleDB} 
+\end{center}
+
+
+
+\vspace{5mm}
+
+\textbf{Giảng viên hướng dẫn: } Thầy Trần Quang
+
+\vspace{5mm}
+
+\textbf{Sinh viên thực hiện:}\\
+
+ \begin{tabular}{| c | c |} 
+ \hline
+\textbf{ Họ và tên }& \textbf{MSSV} \\ [0.5ex] 
+ \hline
+ Trương Ngọc Anh & 1410141 \\ 
+ \hline
+ Lê Nguyễn Minh Trí & 1414207 \\
+ \hline
+ Nguyễn Quốc Kim Hoàng & 141xxxx \\
+ \hline
+ Nguyễn Khánh Bình & 141xxxx \\
+ \hline
+\end{tabular}
+\thispagestyle{empty}
+\end{titlepage}
+
+
+%
+\begin{comment}
+
+\end{comment}
+%\maketitle
+\tableofcontents
+
+%
+
+%
+\listoffigures
+\listoftables
+%\mainmatter
+%
+\input{chapters/Hoang/Hoang}\newpage\cleardoublepage
+\input{chapters/Na/Na}\newpage\cleardoublepage
+\input{chapters/Binh/Binh}\newpage\cleardoublepage
+\input{chapters/Tri/Tri}\newpage\cleardoublepage
+%\addbibresource{references.bib}
+\nocite{*}
+\bibliography{references}\newpage\cleardoublepage
+
+\bibliographystyle{plain}
+
+\end{document}
