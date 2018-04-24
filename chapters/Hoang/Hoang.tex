@@ -1,5 +1,133 @@
-\chapter{Giới thiệu Document store và MongoDB}
+\chapter{Giới thiệu NoSQL và MongoDB}
+\section{Mở đầu}
+Hiện nay khi nói đến cơ sở dữ liệu, có sự phân chia rõ ràng giữa 2 trường phái kĩ thuật cơ sở dữ liệu là SQL và NoSQL - hay còn gọi cách khác là Cơ sở dữ liệu Quan hệ và Cơ sở dữ liệu Phi Quan hệ. Trong các chương trình giảng dạy ở bậc đại học thì thường chú trọng vào nghiên cứu và tìm hiểu các nguyên lý, cấu tạo của cơ sở dữ liệu SQL mà không khai thác các cơ sở dữ liệu NoSQL. Do đó ở bài báo cáo này, chúng ta sẽ tập trung tìm hiểu và khai thác kiến thức về các cơ sở dữ liệu NoSQL mà đối tượng nghiên cứu cụ thể tiêu biểu là MongoDB.
 
-\section{}
+\section{NoSQL - Non SQL}
+\subsection{Giới thiệu}
+Tuy NoSQL đã xuất hiện từ thập niên 60 nhưng thời gian gần đây nó mới bắt đầu tìm được vị trí của mình. Như tên gọi của nó, NoSQL cung cấp cơ chế triển khai cơ sở dữ liệu không theo cấu trúc nhất định. SQL đã tận dụng tốt việc khai báo schema chặt chẽ để quản lý, lưu trữ dữ liệu một cách tối ưu và cung cấp cho người dùng phương tiện để truy cập, sử dụng cơ sở dữ liệu hiệu quả nhất, nhờ đó mà nó đã từng là lựa chọn hàng đầu cho việc triển khai cơ sở dữ liệu.
 
-\section{}
+Trong thời đại hiện nay, với sự bùng nổ của các dịch vụ internet kéo theo sự bùng nổ dữ liệu người dùng phi cấu trúc. Chính sự chặt chẽ của cơ sở dữ liệu SQL đã gây khó khăn trong việc quản lý, lưu trữ các dữ liệu phi cấu trúc này do SQL chỉ hoạt động tốt trên dữ liệu có cấu trúc. Điều này đã tạo cơ hội cho NoSQL phát huy điểm mạnh của mình.
+\subsection{Phân loại}
+Cơ sở dữ liệu NoSQL sử dụng khai báo schema động để quản lý cơ sở dữ liệu theo nhiều cách khác nhau, dựa vào đó ta có thể phân chúng thành nhiều loại:
+\begin{itemize}
+\item \textbf{Key-value store} mô hình SQL đơn giản nhất, lưu trữ dữ liệu dưới dạng khóa và trị. Tiêu biểu: ArangoDB, Aerospike, Oracle NoSQL Database, Dynamo, Riak, Voldemort.
+\item \textbf{Column store} lưu các bảng dữ liệu theo dạng cột như đơn vị lưu trữ nhỏ nhất thay vì theo hàng như truyền thống. Tiêu biểu: Amazon DynamoDB, Bigtable, Cassandra, Druid, HBase, Hypertable.
+\item \textbf{Document store} với ý tưởng chính là việc định nghĩa "document", là đơn vị dữ liệu nhỏ nhất chứa dữ liệu của bản thân nó và có mang key để phục vụ việc truy xuất. Ngoài việc truy xuất theo khóa thì các Document-Database này còn cung cấp các API giúp truy xuất document dựa trên nội dung nó chứa. Tiêu biểu: \textbf{\textit{MongoDB}}, ArangoDB, BaseX, Clusterpoint, Couchbase, CouchDB, DocumentDB, IBM Domino, MarkLogic, Qizx, RethinkDB.
+\item \textbf{Graph} thường được dùng cho dữ liệu mà quan hệ giữa các thực thể có thể được biểu diễn tốt bằng đồ thị. Tiêu biểu: Neo4J, Polyglot.
+\end{itemize}
+\section{So sánh SQL và NoSQL}
+\subsection{Query phức tạp}
+Nhờ vào cấu trúc chặt chẽ của mình nên SQL có khả năng thực hiện các câu query phức tạp một cách tối ưu nhất so với NoSQL.
+\subsection{ACID}
+Tuân thủ ACID giúp CSDL SQL giảm dư thừa dữ liệu và bảo vệ tính toàn vẹn. Tuy nhiên CSDL NoSQL bỏ qua ACID để có thể trở nên linh động và tăng tốc độ xử lý.
+\subsection{Dữ liệu lưu trữ}
+SQL chỉ có thể lưu trữ có cấu trúc. NoSQL có thể lưu trữ dữ liệu có cấu trúc hoặc phi cấu trúc.
+\subsection{Khả năng mở rộng}
+SQL khả mở rộng độ sâu của CSDL trong khi NoSQL khả mở rộng chiều ngang, giúp cho CSDL có thể được phân tán ở nhiều server qua đó tăng hiệu suất truy xuất dữ liệu, phù hợp cho các CSDL lớn và thay đổi liên tục.
+\subsection{Cấu trúc}
+Trong khi SQL ràng buộc việc khai báo schema rõ ràng trước khi có thể thêm dữ liệu thì với NoSQL ta có thể tạo document mà không cần khai báo schema trước. Mỗi document có cấu trúc, schema khác nhau.
+\section{MongoDB}
+\subsection{Giới thiệu}
+MongoDB là hệ CSDL NoSQL Document store mở. Mỗi record trong MongoDB là một \textbf{\textit{document}}, gồm có các cặp trường và trị, và mỗi bảng sẽ là \textbf{\textit{collection}}, tập hợp nhiều document, và \textbf{\textit{Database}} là tập hợp của nhiều collection. Do cấu trúc linh động nên bảng không có schema cố định mà schema của mỗi document sẽ tự do document quản lý và quyết định. Document của MongoDB có cấu trúc gần giống với các đối tượng JSON. Các giá trị có thể là document khác hoặc mảng hoặc mảng các document.
+\subsection{Datatype}
+Ngoài việc hỗ trợ các datatype thông dụng trong các ngôn ngữ lập trình, MongoDB còn định nghĩa một số datatype khác nhau:
+\begin{itemize}
+\item \textbf{Date}
+\item \textbf{ObjectId} là kiểu dữ liệu được MongoDB dùng mặc định để đánh Id cho các document trong collection
+\item \textbf{Số} MongoDB mặc định lưu trữ các dữ liệu số dưới dạng double 64-bit. Bên cạnh đó còn cung cấm nhiều wrapper để đặc tả các số một cách cụ thể như:
+\begin{itemize}
+\item \textbf{NumberLong} 64-bit integer
+\item \textbf{NumberInt} 32-bit integer
+\item \textbf{NumberDecimal} 128-bit decimal-based floating-point numbers
+\end{itemize}
+\end{itemize}
+\subsection{Các thao tác cơ bản trong MongoDB sử dụng mongo shell - CRUD}
+\subsubsection{Create}
+\begin{itemize}
+\item 
+\begin{lstlisting} 
+use DATABASE_NAME
+\end{lstlisting}
+sẽ truy cập database có tên \textit{DATABASE\_NAME} hoặc tạo nếu chưa tồn tại và truy cập database vừa tạo.
+\item 
+\begin{lstlisting}
+db.createCollection(collection_name, options)
+\end{lstlisting}
+dùng để tạo một collection tên \textit{collection\_name} và có thể khai báo thêm một số option như capped, size, max - Giới hạn kích thước hay số lượng document tối đa của collection - hay autoIndexId - tự động index trường \_id của document.
+\item
+\begin{lstlisting}
+db.collection_name.insert(document)
+
+db.collection_name.insertOne(document)
+\end{lstlisting}
+thêm \textit{document} vào collection \textit{collection\_name}
+\item
+\begin{lstlisting}
+db.collection_name.insertMany(documents)
+\end{lstlisting}
+thêm tất cả các document trong danh sách \textit{documents} vào collection \textit{collection\_name}
+\end{itemize}
+\subsubsection{Read}
+\begin{itemize}
+\item
+\begin{lstlisting}
+show dbs
+\end{lstlisting}
+xuất cái database hiện có.
+\item
+\begin{lstlisting}
+show collections
+\end{lstlisting}
+xuất danh sách các collection trong database hiện tại.
+\item
+\begin{lstlisting}
+db.collection_name.find()
+\end{lstlisting}
+xuất tất cả document trong collection \textit{collection\_name}.
+\item
+\begin{lstlisting}
+db.collection_name.find(filter)
+\end{lstlisting}
+xuất tất cả document trong collection \textit{collection\_name} thỏa \textit{filter}.
+\end{itemize}
+\subsubsection{Update}
+\begin{itemize}
+\item
+\begin{lstlisting}
+db.colletion_name.updateOne(filter, action)
+\end{lstlisting}
+thực hiện update được mô tả trong \textit{action} trên document thỏa \textit{filter} trong \textit{collection\_name}. Nếu có nhiều hơn 1 document thỏa filter thì sẽ thực hiện \textit{action} trên document đầu tiền thỏa.
+\item
+\begin{lstlisting}
+db.colletion_name.updateMany(filter, action)
+\end{lstlisting}
+thực hiện update được mô tả trong \textit{action} trên tất cả document thỏa \textit{filter} trong \textit{collection\_name}.
+\item
+\begin{lstlisting}
+db.colletion_name.replaceOne(filter, document)
+\end{lstlisting}
+thay thế document thỏa \textit{filter} trong \textit{collection\_name} bằng \textit{document}. Nếu có nhiều hơn 1 document thỏa \textit{filter} trong collection thì thực hiện thay thế trên document đầu tiên thỏa.
+\end{itemize}
+\subsubsection{Delete}
+\begin{itemize}
+\item
+\begin{lstlisting}
+db.dropDatabase()
+\end{lstlisting}
+dùng để xóa database đang truy cập.
+\item
+\begin{lstlisting}
+db.collection_name.drop()
+\end{lstlisting}
+dùng để drop collection có tên \textit{collection\_name}
+\item
+\begin{lstlisting}
+db.colletion_name.deleteOne(filter)
+\end{lstlisting}
+xóa một document thỏa \textit{filter} trong \textit{collection\_name}. Nếu có nhiều hơn 1 document thỏa \textit{filter} trong collection thì xóa document đầu tiên thỏa.
+\item
+\begin{lstlisting}
+db.colletion_name.deleteMany(filter)
+\end{lstlisting}
+xóa tất cả document thỏa \textit{filter} trong \textit{collection\_name}.
+\end{itemize}
