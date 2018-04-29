@@ -18,6 +18,19 @@
 \usetikzlibrary{decorations.pathmorphing}
 \usepackage{subcaption}
 \usepackage{verbatim} 
+\usepackage{listings}
+\usepackage{lmodern}  % for bold teletype font
+\usepackage{xcolor}   % for \textcolor
+\setcounter{secnumdepth}{3}
+\definecolor{light-gray}{gray}{0.95}
+\lstset{
+  language=Python,
+  backgroundcolor=\color{light-gray},
+  basicstyle=\ttfamily,
+  frame=single,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
 
 
 %\renewcommand{\familydefault}{\sfdefault}

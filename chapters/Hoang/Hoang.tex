@@ -3,6 +3,7 @@
 Hiện nay khi nói đến cơ sở dữ liệu, có sự phân chia rõ ràng giữa 2 trường phái kĩ thuật cơ sở dữ liệu là SQL và NoSQL - hay còn gọi cách khác là Cơ sở dữ liệu Quan hệ và Cơ sở dữ liệu Phi Quan hệ. Trong các chương trình giảng dạy ở bậc đại học thì thường chú trọng vào nghiên cứu và tìm hiểu các nguyên lý, cấu tạo của cơ sở dữ liệu SQL mà không khai thác các cơ sở dữ liệu NoSQL. Do đó ở bài báo cáo này, chúng ta sẽ tập trung tìm hiểu và khai thác kiến thức về các cơ sở dữ liệu NoSQL mà đối tượng nghiên cứu cụ thể tiêu biểu là MongoDB.
 
 \section{NoSQL - Non SQL}
+Đầu tiên, ta sẽ giới thiệu về NoSQL. Bên cạnh đó nêu ra cách phân loại các cơ sở dữ liệu NoSQL và nêu ra các điểm khác nhau nổi bật giữa cơ sở dữ liệu NoSQL và cơ sở dữ liệu quan hệ truyền thống.
 \subsection{Giới thiệu}
 Tuy NoSQL đã xuất hiện từ thập niên 60 nhưng thời gian gần đây nó mới bắt đầu tìm được vị trí của mình. Như tên gọi của nó, NoSQL cung cấp cơ chế triển khai cơ sở dữ liệu không theo cấu trúc nhất định. SQL đã tận dụng tốt việc khai báo schema chặt chẽ để quản lý, lưu trữ dữ liệu một cách tối ưu và cung cấp cho người dùng phương tiện để truy cập, sử dụng cơ sở dữ liệu hiệu quả nhất, nhờ đó mà nó đã từng là lựa chọn hàng đầu cho việc triển khai cơ sở dữ liệu.
 
@@ -19,17 +20,19 @@ Cơ sở dữ liệu NoSQL sử dụng khai báo schema động để quản lý
 \subsection{Query phức tạp}
 Nhờ vào cấu trúc chặt chẽ của mình nên SQL có khả năng thực hiện các câu query phức tạp một cách tối ưu nhất so với NoSQL.
 \subsection{ACID}
-Tuân thủ ACID giúp CSDL SQL giảm dư thừa dữ liệu và bảo vệ tính toàn vẹn. Tuy nhiên CSDL NoSQL bỏ qua ACID để có thể trở nên linh động và tăng tốc độ xử lý.
+Tuân thủ ACID giúp CSDL SQL bảo vệ tính toàn vẹn, đảm bảo tính hợp lý của transaction. Tuy nhiên CSDL NoSQL bỏ qua ACID để có thể trở nên linh động và tăng tốc độ xử lý.
 \subsection{Dữ liệu lưu trữ}
 SQL chỉ có thể lưu trữ có cấu trúc. NoSQL có thể lưu trữ dữ liệu có cấu trúc hoặc phi cấu trúc.
 \subsection{Khả năng mở rộng}
 SQL khả mở rộng độ sâu của CSDL trong khi NoSQL khả mở rộng chiều ngang, giúp cho CSDL có thể được phân tán ở nhiều server qua đó tăng hiệu suất truy xuất dữ liệu, phù hợp cho các CSDL lớn và thay đổi liên tục.
 \subsection{Cấu trúc}
 Trong khi SQL ràng buộc việc khai báo schema rõ ràng trước khi có thể thêm dữ liệu thì với NoSQL ta có thể tạo document mà không cần khai báo schema trước. Mỗi document có cấu trúc, schema khác nhau.
-\section{MongoDB}
-\subsection{Giới thiệu}
+\newpage
+\section{MongoDB} \label{sec:MongoDB}
+Sau khi đã tìm hiểu về NoSQL nói chung ở phần trước thì phần này ta sẽ đi vào chi tiết cụ thể về một điển hình tiêu biểu của NoSQL là MongoDB. Ở phần \ref{ssec:MongoDB.1} ta sẽ giới thiệu sơ bộ về MongoDB bên cạnh các khái niệm về các đơn vị và cấu trúc cơ bản của một CSDL xây dựng bằng MongoDB. Sau đó ta sẽ liệt kê sơ bộ các loại dữ liệu trong phần \ref{ssec:MongoDB.2} và các lệnh cơ bản nhất trong phần \ref{ssec:MongoDB.3}.
+\subsection{Giới thiệu} \label{ssec:MongoDB.1}
 MongoDB là hệ CSDL NoSQL Document store mở. Mỗi record trong MongoDB là một \textbf{\textit{document}}, gồm có các cặp trường và trị, và mỗi bảng sẽ là \textbf{\textit{collection}}, tập hợp nhiều document, và \textbf{\textit{Database}} là tập hợp của nhiều collection. Do cấu trúc linh động nên bảng không có schema cố định mà schema của mỗi document sẽ tự do document quản lý và quyết định. Document của MongoDB có cấu trúc gần giống với các đối tượng JSON. Các giá trị có thể là document khác hoặc mảng hoặc mảng các document.
-\subsection{Datatype}
+\subsection{Datatype} \label{ssec:MongoDB.2}
 Ngoài việc hỗ trợ các datatype thông dụng trong các ngôn ngữ lập trình, MongoDB còn định nghĩa một số datatype khác nhau:
 \begin{itemize}
 \item \textbf{Date}
@@ -41,7 +44,7 @@ Ngoài việc hỗ trợ các datatype thông dụng trong các ngôn ngữ lậ
 \item \textbf{NumberDecimal} 128-bit decimal-based floating-point numbers
 \end{itemize}
 \end{itemize}
-\subsection{Các thao tác cơ bản trong MongoDB sử dụng mongo shell - CRUD}
+\subsection{Các thao tác cơ bản trong MongoDB sử dụng mongo shell - CRUD} \label{ssec:MongoDB.3}
 \subsubsection{Create}
 \begin{itemize}
 \item 
@@ -130,4 +133,103 @@ xóa một document thỏa \textit{filter} trong \textit{collection\_name}. Nế
 db.colletion_name.deleteMany(filter)
 \end{lstlisting}
 xóa tất cả document thỏa \textit{filter} trong \textit{collection\_name}.
+\end{itemize}
+\section{Kiến trúc lưu trữ của MongoDB} \label{sec:MongoDB.4}
+Cuối cùng, ở phần này ta sẽ đi chi tiết vào kiến trúc của MongoDB. Ta sẽ giới thiệu sơ về 2 định dạng dữ liệu JSON ở \ref{ssec:MongoDB.4.1} và BSON ở \ref{ssec:MongoDB.4.2}. Sau đó ta sẽ đi vào cốt lõi của việc lưu trữ dữ liệu của MongoDB trong phần \ref{ssec:MongoDB.4.3}.
+\subsection{JSON} \label{ssec:MongoDB.4.1}
+\textbf{JSON} (viết tắt cho \textit{JavaScript Object Notation}) là một định dạng lưu trữ, trao đổi dữ liệu nhẹ, con người có thể dễ dàng đọc và ghi cho cả con người và máy. JSON là định dạng được lưu dưới dạng text và không phụ thuộc vào ngôn ngữ lập trình sử dụng tuy cách kí hiệu gần gũi với các ngôn ngữ họ C như C, C++, C\#, Java, Javascript, Perl, Python,...
+
+JSON được xây dựng dựa trên 2 cấu trúc dữ liệu nền tảng là:
+\begin{itemize}
+\item \textit{Tập hợp các cặp key-value (khóa-trị)} được gọi là \textit{object} (đối tượng).
+\item \textit{Danh sách các giá trị} hay còn được gọi là \textit{array} (mảng).
+\end{itemize}
+Các loại dữ liệu (trị) mà JSON có thể nhận dạng là:
+\begin{itemize}
+\item string
+\item number
+\item object
+\item array
+\item true
+\item false
+\item null
+\end{itemize}
+\subsection{BSON} \label{ssec:MongoDB.4.2}
+MongoDB lưu trữ dữ liệu dưới một phương thức biểu diễn nhị phân gọi là BSON. \textbf{BSON} (BinaryJSON) là phương thức mã hóa nhị phân các document với định dạng tương tự JSON. BSON còn mở rộng các kiểu dữ liệu, thêm vào một số kiểu dữ liệu mà JSON chưa có như Date, BinData.
+
+Các thuộc tính chính của BSON:
+\begin{itemize}
+\item \textbf{Nhẹ}. Các overhead được tối giảm hết mức có thể.
+\item \textbf{Khả duyệt tuần tự}. BSON được thiết kế có khả năng cho phép duyệt tuần tự dữ liệu.
+\item \textbf{Hiệu quả}. Mã hóa và giải mã file BSON có thể được thực hiện nhanh chóng nhờ vào sử dụng các kiểu dữ liệu của C.
+\end{itemize}
+Ví dụ về mã hóa BSON:
+\begin{lstlisting}
+
+ {"hello": "world"}
+->	
+
+  \x16\x00\x00\x00                   // total document size
+  \x02                               // 0x02 = type String
+  hello\x00                          // field name
+  \x06\x00\x00\x00world\x00          // field value
+  \x00                               // 0x00 = type EOO ('end of object')
+
+ {"BSON": ["awesome", 5.05, 1986]}
+->	
+  \x31\x00\x00\x00
+  \x04BSON\x00
+  \x26\x00\x00\x00
+  \x02\x30\x00\x08\x00\x00\x00awesome\x00
+  \x01\x31\x00\x33\x33\x33\x33\x33\x33\x14\x40
+  \x10\x32\x00\xc2\x07\x00\x00
+  \x00
+  \x00
+\end{lstlisting}
+\subsection{Storage Engine} \label{ssec:MongoDB.4.3}
+\textbf{Storage Engine} chính là bộ phận giữ vai trò quản lý lưu trữ dữ liệu trên bộ nhớ chính cũng như trên đĩa. MongoDB cho phép người dùng chọn các storage engine khác nhau trong nhiều trường hợp khác nhau. Việc chọn storage engine phù hợp với mục đích sử dụng sẽ giúp cải thiện hiệu năng của hệ thống sử dụng cơ sở dữ liệu.
+\subsubsection{WiredTiger}
+\textbf{WiredTiger} là storage engine mặc định kể từ MongoDB 3.2 trở đi. WiredTiger xuất hiện và thể hiện được sự mạnh mẽ của mình, qua đó trở thành lựa chọn thông dụng trong việc xây dựng CSDL.
+
+WiredTiger kiểm soát song song hóa ở tầng document (\textbf{Document-level Concurrency Control}) cho các tác vụ ghi. Việc này có nghĩa là nhiều user có thể ghi đồng thời nhiều document khác nhau trong cùng một collection một cách song song. Phần lớn các tác vụ đọc, ghi được WiredTiger kiểm soát bằng Optimistic concurrency control. Khi phát hiện xung đột giữa 2 tác vụ, một trong 2 sẽ phát lỗi ghi dữ liệu khiến MongoDB sẽ thử thực hiện lại tác vụ đó sau.
+
+Bên cạnh đó WiredTiger còn sử dụng \textbf{MultiVersion Concurrency Control} (MVCC). Khi bắt đầu tác vụ, WiredTiger sẽ tạo một \textbf{snapshot} - bản sao dữ liệu của cơ sở dữ liệu - thể hiện một phần nhỏ cơ sở dữ liệu vào trong bộ nhớ chính. Khi ghi xuống đĩa, WiredTiger ghi tất cả dữ liệu trong snapshot xuống đĩa. Dữ liệu lúc này đã trở nên bền vững và được xem là một checkpoint. \textbf{Checkpoint} có nhiệm vụ đảm bảo tính nhất quán của các file dữ liệu của cơ sở dữ liệu. Từ phiên bản \textit{3.6} thì WiredTiger tạo checkpoint mỗi 60 giây. Trong khi đang ghi checkpoint mới thì checkpoint cũ hợp lệ sẽ vẫn được giữ nên nếu có trường hợp xảy ra lỗi khi đang ghi dữ liệu xuống đĩa thì ta vẫn có thể khôi phục lại đến checkpoint cũ. Checkpoint mới chỉ được xem là bền vững khi bảng metadata của WiredTiger được cập nhật đồng nhất để tham chiếu đến checkpoint mới, khi đó checkpoint cũ mới được xóa.
+
+Tuy với WiredTiger ta có thể khôi phục đến checkpoint cuối cùng nhưng để khôi phục các thay đổi sau checkpoint đó thì ta cần sử dụng thêm ghi log. WiredTiger sử dụng \textit{write-ahead transaction log} - tức là các thay đổi tạo ra do các transaction được log ghi nhận chỉ được phép ghi xuống đĩa nếu log đó đã được ghi xuống đĩa.
+
+Với WiredTiger, MongoDB hỗ trợ nén dữ liệu cho tất cả collection và index. Nén giữ liệu sử dụng thêm năng suất từ CPU đổi lại giúp giảm dung lượng sử dụng của cơ sở dữ liệu. Mặc định WiredTiger dùng thư viện \textit{snappy} để nén các block dữ liệu và file log. Bên cạnh đó ta có thể chọn không nén dữ liệu hoặc nén bằng thuật toán khác như \textit{zlib}.
+\subsubsection{MMAPv1}
+\textbf{MMAPv1} là storage engine cơ bản của MongoDB dựa trên memory mapped file với các ưu điểm về hoạt động tốt với các tác vụ insert, reads số lượng lớn và in-place update.
+
+Để đảm bảo tính bền vững của cơ sở dữ liệu, MongoDB mặc định ghi log tất cả các thay đổi vào file log (journal) trên đĩa. MongoDB ghi log thường xuyên hơn là ghi dữ liệu xuống đĩa. Mặc định ghi dữ liệu xuống đĩa mỗi 60 giấy còn ghi log mỗi 100 mili giây. Chính việc ghi log giúp MongoDB khôi phục dữ liệu khi xảy ra sự cố.
+
+Các record sẽ được cấp phát bộ nhớ liên tục trên đĩa, dùng để lưu trữ các document. Nếu document trở nên lớn hơn kích thước record đã được cấp phát thì record mới sẽ được cấp phát và document sẽ được dời sang record mới đồng thời cập nhất các tham chiếu index tới document đó.
+\subsubsection{So sánh WiredTiger và MMAPv1}
+\begin{itemize}
+\item \textbf{Song song}
+
+MMAPv1 sử dụng Collection-level Concurrency Control. Nếu một người dùng thực hiện tác vụ thay đổi một document thì cả collection của document đó sẽ bị lock và các người dùng khác sẽ không thể truy cập collection đó. Ở các phiên bản trước thì MMAPv1 dùng Database-level Concurrency Control.
+
+Còn WiredTiger sử dụng Document-level, Optimistic Concurrency Control.
+\item \textbf{Logging (Journal)}
+
+MMAPv1 dùng tính năng này để khôi phục.
+
+WiredTiger sử dụng các checkpoint để khôi phục dữ liệu, có thể dùng thêm logging để khôi phục các thay đổi chưa được tạo checkpoint.
+\item \textbf{Nén dữ liệu}
+MMAPv1 không nén dữ liệu trong khi WiredTiger có thể nén dữ liệu theo giải thuật snappy hay zlib.
+\end{itemize}
+\subsubsection{In-memory Storage Engine}
+Như tên gọi, \textbf{In-memory Storage Engine} lưu trữ toàn bộ dữ liệu, dữ kiện thiết lập, index,... trên bộ nhớ chính. Vì thế giảm thiểu lượng lớn thời gian hao tổn do các tác vụ I/O trên đĩa. In-memory Storage Engine chỉ dành cho phiên bản \textit{MongoDB Enterprise}.
+
+In-memory Storage Engine dùng Document-level Concurrency Control.
+
+Do toàn bộ dữ liệu chỉ được lưu trữ trên bộ nhớ chính nên đổi lại năng suất, tốc độ cao thì CSDL không có tính bền vững.
+\section{Nguồn}
+\begin{itemize}
+\item http://json.org/
+\item http://bsonspec.org/
+\item https://www.mongodb.com/
+\item https://en.wikipedia.org/wiki/NoSQL
+\item https://www.vembu.com/blog/mongodb-mmap-vs-wiredtiger-comprehensive-comparison/
 \end{itemize}
