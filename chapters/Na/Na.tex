@@ -41,7 +41,7 @@ Ví dụ dưới đây là câu lệnh thực hiện việc tạo ra chỉ mục
 		\label{fig:spindex}
 \end{figure}
 
-\section{Các phép toán}
+\section{Aggregation}
 Sau khi data đã được lưu và thực hiện tạo index cần thiết trên mongoDB, trong công việc chúng ta có thể cần thực hiện nhiều tác vụ như phân tích theo nhiều cách khác nhau. Chính bì vậy mà mongoDB đã cung cấp một số công cụ để thực hiện các việc đó.\\
 \subsection{Aggregation framework}
 Aggragation có thể hiểu là sự tập hợp. Các Aggregation operation xử lý các bản dữ liệu và trả về kết quả đã được tính toán thành công. Các phép toán Aggregation nhóm các giá trị từ nhiều Document lại với nhau sau đó thực hiện nhiều phép toán đa dạng khác để trả về một kết quả duy nhất. Nói tới đây chúng ta liên tưởng tới phép toán count() và GROUPBY trong các hệ cơ sở dữ liệu SQL, các phép toán này tương ứng với Aggregation trong mongoDB.\\
@@ -55,5 +55,44 @@ Với Aggregation, mongoDB có hỗ trợ việc sử dụng thực hiện pipel
 	\item \$limit: giới hạn số document
 	\item \$skip: Bỏ qua hay nhảy qua số document đã cung cấp.
 	\item \$unwind: chia một document thành nhiều document. Tạo ra một số lượng document cho các giai đoạn khác nhau.
-\subsection{MapReduce}	
 \end{itemize}
+\pagebreak
+\subsection{MapReduce}
+MapReduce là hệ xử lý dữ liệu để tổng hợp (cô đọng) một khối lượng dữ liệu lớn thành các kết quả tổng thể có ích. Tuy nhiên đây là một công việc tốn kém về thời và không nên sử dụng cho việc phân tích dữ liệu real-time(thơi gian thực). Dưới đây là minh họa cho công việc MapReduce.\\
+\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.5]{charts/mapreduce.png}
+		\caption{MapReduce}
+		\label{fig:mapreduce}
+\end{figure}
+Như hình trên, MapReduce gồm 2 bước chính. Thứ nhất là bước map, bước này mục đích là gộp các giá trị của các document khác nhau nhưng có chung một Key như hình trên gom các giá trị của các document có key là "A123" lại với nhau và tương tự với key "B212". Bước tiếp theo là Reduce có nghĩa là rút gọn và gom hay tổng các giá trị cùng một Key được map ở bước trên (Hình minh họa)
+
+
+\section{Các đặc điểm khi thiết kế cơ sở dữ liệu với MongoDB}
+\subsection{Normalization và Denormalization(Chuẩn hóa và không chuẩn hóa}
+\textbf{Normalization (chuẩn hóa).} Khi thiết kế một hệ cơ sở dữ liệu nhằm mục đích trình bày cấu trúc của dữ liệu, chuẩn hóa là một trong những yếu tố quan trọng nhất. Chuẩn hóa trong store document la việc chia nhỏ dữ liệu ra nhiều collection và việc tham chiếu lẫn nhau giữa các collection. Vì thế nên có thể nhiều document có thể tham chiếu tới một mẫu dữ liệu nào trong một collection. Do tính chất đó mà khi cần thêm vào hay thay đổi dữ liệu được trỏ tới thì chỉ cần thay đổi tại một nơi. Tuy nhiên trong mongoDB thì việc query để thu thập các document sẽ là một câu query mà chứa nhiều câu query nhỏ.\\
+\textbf{Denormalization (Không chuẩn hóa).} Ngược lại với chuẩn hóa, không chuẩn hóa không cia nhỏ dữ liệu hay nhiều document thao khảo thới một collection nào đó mà là việc nhúng một mẫu document này trong hoàn toàn một document khác, điều nay khiến cho việc update hay insert diễn ra khác khó khăn và phức tạp. Tuy nhiên không chuẩn hóa lại giúp việc đọc hay truy xuất dữ liệu nhanh hơn.\\
+Do các yếu tố đặc điểm của store document trên mà việc lựa chọn chuẩn hóa hay không chuẩn hóa dữ liệu là một quyết định khó khăn. Trong những trường hợp cụ thể mà người thiết kế schema dưới dạng store document cần tính toán sao cho chuẩn hóa và không chuẩn hóa có lợi nhất.
+\subsection{Ví dụ về trình bày dữ liệu trong store document}
+Dưới đây la một ví dụ chuẩn hóa dữ liệu.
+\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.5]{charts/nor1.png}
+		\caption{data representation 1}
+		\label{fig:datare}
+\end{figure}
+Có thể thấy đây là một document chứa thông tin một sinh viên, trường id là biểu diễn id cho document đó ta bỏ qua, trường \textbf{studentId} chứa giá trị là một chuỗi Hex và có trường \textbf{classes} là một mảng chứa các đối tượng lưu những mã Hex khác nhau. Giờ đến với hình minh họa tiếp theo.
+\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.5]{charts/nor2.png}
+		\caption{data representation 2}
+		\label{fig:datare2}
+\end{figure}
+Với document này, ta chú ý đến trường \textbf{\_id} giá trị Hex của trường này trùng với giá trị Hex trong trường \textbf{studentId} của hình \ref{fig:datare}. Có nghĩa rằng trường \textbf{studentId} thao khảo đến document \ref{fig:datare2} la một sinh viên nào đó tên "John Doe". Cứ theo ý nghĩa trên, ta có thể nhận thấy rằng giá giá trị Hex trong mảng \textbf{classes} sẽ tham khảo đến một document nào đó mang thông tin lớp học mà có \textbf{\_id} trùng với giá trị mà nó mang.\\
+Nếu muốn biểu diễn dữ liệu để tối ưu việt đọc truy xuất mà không quan tâm đến chi phí update thì dữ liệu thường được biểu diễn mọi thông tin class hay tên họ của sinh viên sẽ được lưu thẳng trực tiếp vào một document như sau mà không cần sử dụng việc tham khảo như trên. Đây là không chuẩn hóa đã được trình bày lý thuyết ở mục trên.
+\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.5]{charts/denor.png}
+		\caption{dữ liệu không chuẩn hóa}
+		\label{fig:datare3}
+\end{figure}
