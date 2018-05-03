@@ -1,6 +1,6 @@
 \chapter{Thiết kế cơ sở dữ liệu với MongoDB}
 
-\section{Index trong MongoDB}
+\section{Index trong MongoDB}\cite{def}
 \subsection{Index là gì?}
 Trong cơ sở dữ liệu, ta đã biết Index(chỉ mục) là một file cấu trúc lưu trữ trên ổ cứng tương ứng với một table hoặc một view nào đó trong cơ sở dữ liệu nhằm mục đích cải thiện tốc độ truy xuất dữ liệu từ table hoặc view đó.\\
 Ở mục này, chúng ta sẽ tìm hiểu cách đánh index cũng như các loại index có trong MongoDB.
@@ -41,11 +41,11 @@ Ví dụ dưới đây là câu lệnh thực hiện việc tạo ra chỉ mục
 		\label{fig:spindex}
 \end{figure}
 
-\section{Aggregation}
-Sau khi data đã được lưu và thực hiện tạo index cần thiết trên mongoDB, trong công việc chúng ta có thể cần thực hiện nhiều tác vụ như phân tích theo nhiều cách khác nhau. Chính bì vậy mà mongoDB đã cung cấp một số công cụ để thực hiện các việc đó.\\
+\section{Aggregation}\cite{def1}
+Sau khi data đã được lưu và thực hiện tạo index cần thiết trên mongoDB, trong công việc chúng ta có thể cần thực hiện nhiều tác vụ như phân tích theo nhiều cách khác nhau. Chính vì vậy mà mongoDB đã cung cấp một số công cụ để thực hiện các việc đó.\\
 \subsection{Aggregation framework}
 Aggragation có thể hiểu là sự tập hợp. Các Aggregation operation xử lý các bản dữ liệu và trả về kết quả đã được tính toán thành công. Các phép toán Aggregation nhóm các giá trị từ nhiều Document lại với nhau sau đó thực hiện nhiều phép toán đa dạng khác để trả về một kết quả duy nhất. Nói tới đây chúng ta liên tưởng tới phép toán count() và GROUPBY trong các hệ cơ sở dữ liệu SQL, các phép toán này tương ứng với Aggregation trong mongoDB.\\
-Với Aggregation, mongoDB có hỗ trợ việc sử dụng thực hiện pipeline, có nghĩa là cho phép tạo ra một hoạt động hay tiên trình trên một số input và sử dụng output đó trở thành input cho các lệnh tiếp theo. Có một tập hợp các trạng thái có thể có, mỗi giai đoạn trên lấy một tập các document và tạo kết quả mà kết quả này được sử dụng cho các giai đoạn tiếp theo.
+Với Aggregation, mongoDB có hỗ trợ việc sử dụng thực hiện pipeline, có nghĩa là cho phép tạo ra một hoạt động hay tiến trình trên một số input và sử dụng output đó trở thành input cho các lệnh tiếp theo. Có một tập hợp các trạng thái có thể có, mỗi giai đoạn trên lấy một tập các document và tạo kết quả mà kết quả này được sử dụng cho các giai đoạn tiếp theo.
 \textbf{Các giai đoạn trong Aggregation:}
 \begin{itemize}
 	\item \$match: công dụng như câu lệnh where trong các hệ cơ sở dữ liệu thông thường. Nó là hoạt động lọc giúp giảm số lượng document.
@@ -62,16 +62,16 @@ MapReduce là hệ xử lý dữ liệu để tổng hợp (cô đọng) một k
 \begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.5]{charts/mapreduce.png}
-		\caption{MapReduce}
+		\caption{MapReduce}\cite{def3}
 		\label{fig:mapreduce}
 \end{figure}
-Như hình trên, MapReduce gồm 2 bước chính. Thứ nhất là bước map, bước này mục đích là gộp các giá trị của các document khác nhau nhưng có chung một Key như hình trên gom các giá trị của các document có key là "A123" lại với nhau và tương tự với key "B212". Bước tiếp theo là Reduce có nghĩa là rút gọn và gom hay tổng các giá trị cùng một Key được map ở bước trên (Hình minh họa)
+Như hình trên, MapReduce gồm 2 bước chính. Thứ nhất là bước map, bước này mục đích là gộp các giá trị của các document khác nhau nhưng có chung một Key, như hình trên gom các giá trị của các document có key là "A123" lại với nhau và tương tự với key "B212". Bước tiếp theo là Reduce có nghĩa là rút gọn và gom hay tổng các giá trị cùng một Key được map ở bước trên (Hình minh họa)
 
 
-\section{Các đặc điểm khi thiết kế cơ sở dữ liệu với MongoDB}
+\section{Các đặc điểm khi thiết kế cơ sở dữ liệu với MongoDB}\cite{def2}
 \subsection{Normalization và Denormalization(Chuẩn hóa và không chuẩn hóa}
-\textbf{Normalization (chuẩn hóa).} Khi thiết kế một hệ cơ sở dữ liệu nhằm mục đích trình bày cấu trúc của dữ liệu, chuẩn hóa là một trong những yếu tố quan trọng nhất. Chuẩn hóa trong store document la việc chia nhỏ dữ liệu ra nhiều collection và việc tham chiếu lẫn nhau giữa các collection. Vì thế nên có thể nhiều document có thể tham chiếu tới một mẫu dữ liệu nào trong một collection. Do tính chất đó mà khi cần thêm vào hay thay đổi dữ liệu được trỏ tới thì chỉ cần thay đổi tại một nơi. Tuy nhiên trong mongoDB thì việc query để thu thập các document sẽ là một câu query mà chứa nhiều câu query nhỏ.\\
-\textbf{Denormalization (Không chuẩn hóa).} Ngược lại với chuẩn hóa, không chuẩn hóa không cia nhỏ dữ liệu hay nhiều document thao khảo thới một collection nào đó mà là việc nhúng một mẫu document này trong hoàn toàn một document khác, điều nay khiến cho việc update hay insert diễn ra khác khó khăn và phức tạp. Tuy nhiên không chuẩn hóa lại giúp việc đọc hay truy xuất dữ liệu nhanh hơn.\\
+\textbf{Normalization (chuẩn hóa).} Khi thiết kế một hệ cơ sở dữ liệu nhằm mục đích trình bày cấu trúc của dữ liệu, chuẩn hóa là một trong những yếu tố quan trọng nhất. Chuẩn hóa trong store document là việc chia nhỏ dữ liệu ra nhiều collection và việc tham chiếu lẫn nhau giữa các collection. Vì thế nên có thể nhiều document có thể tham chiếu tới một mẫu dữ liệu nào trong một collection. Do tính chất đó mà khi cần thêm vào hay thay đổi dữ liệu được trỏ tới thì chỉ cần thay đổi tại một nơi. Tuy nhiên trong mongoDB thì việc query để thu thập các document sẽ là một câu query mà chứa nhiều câu query nhỏ.\\
+\textbf{Denormalization (Không chuẩn hóa).} Ngược lại với chuẩn hóa, không chuẩn hóa không chia nhỏ dữ liệu hay nhiều document thao khảo thới một collection nào đó mà là việc nhúng một mẫu document này trong hoàn toàn một document khác, điều nay khiến cho việc update hay insert diễn ra khác khó khăn và phức tạp. Tuy nhiên không chuẩn hóa lại giúp việc đọc hay truy xuất dữ liệu nhanh hơn.\\
 Do các yếu tố đặc điểm của store document trên mà việc lựa chọn chuẩn hóa hay không chuẩn hóa dữ liệu là một quyết định khó khăn. Trong những trường hợp cụ thể mà người thiết kế schema dưới dạng store document cần tính toán sao cho chuẩn hóa và không chuẩn hóa có lợi nhất.
 \subsection{Ví dụ về trình bày dữ liệu trong store document}
 Dưới đây la một ví dụ chuẩn hóa dữ liệu.

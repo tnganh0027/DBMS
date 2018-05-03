@@ -24,7 +24,7 @@ Một cụm MongoDB shard bao gồm các thành phần sau:
 \begin{figure}[h!]
 \centering
 \captionsetup{justification=centering,margin=1cm}
-  	\includegraphics[scale=1]{sharded-cluster-production-architecture.bakedsvg.svg}
+  	\includegraphics[scale=0.5]{charts/sharded-cluster-production-architecture.png}
   \caption{Sơ đồ của một cụm mẫu shard cho mục đích sản xuất. Chứa chính xác 3 máy chủ cấu hình, 2 hoặc nhiều bộ định tuyến truy vấn $`mongos`$ và ít nhất 2 mảnh. Các mảnh là bộ bản sao.}
   \end{figure}
 
@@ -73,7 +73,7 @@ Một cơ sở dữ liệu có thể có một hỗn hợp các bộ sưu tập 
 \begin{figure}[h!]
 \centering
 \captionsetup{justification=centering,margin=1cm}
-  	\includegraphics[scale=1]{sharded-cluster-primary-shard.bakedsvg.svg}
+  	\includegraphics[scale=0.5]{charts/sharded-cluster-primary-shard.png}
   \caption{Sơ đồ shard chính. Phân đoạn chính chứa các bộ sưu tập không bị shard cũng như các khối tài liệu từ các bộ sưu tập được phân loại. Shard A là shard chính.}
   \end{figure}
 
@@ -83,7 +83,7 @@ Bạn phải kết nối với bộ định tuyến mongos để tương tác v�
 \begin{figure}[h!]
 \centering
 \captionsetup{justification=centering,margin=1cm}
-  	\includegraphics[scale=1]{sharded-cluster-mixed.bakedsvg.svg}
+  	\includegraphics[scale=0.5]{charts/sharded-cluster-mixed.png}
   \caption{Sơ đồ các ứng dụng / trình điều khiển đưa ra các truy vấn tới mongos cho bộ sưu tập không bị quản lý cũng như bộ sưu tập được phân loại. Máy chủ cấu hình không được hiển thị. Bạn có thể kết nối với một mongos giống như cách bạn kết nối với một Mongod, chẳng hạn như thông qua trình bao mongo hoặc trình điều khiển MongoDB.}
   \end{figure}
 
@@ -98,7 +98,7 @@ Hashed Sharding liên quan đến việc tính toán giá trị băm của giá 
 \begin{figure}[h!]
 \centering
 \captionsetup{justification=centering,margin=1cm}
-  	\includegraphics[scale=1]{sharding-hash-based.bakedsvg.svg}
+  	\includegraphics[scale=0.5]{charts/sharding-hash-based.png}
   \caption{Sơ đồ shard dựa trên băm.}
   \end{figure}
 
@@ -112,7 +112,7 @@ Sự phân rã có phạm vi liên quan đến việc chia dữ liệu thành c�
 \begin{figure}[h!]
 \centering
 \captionsetup{justification=centering,margin=1cm}
-  	\includegraphics[scale=1]{sharding-range-based.bakedsvg.svg}
+  	\includegraphics[scale=0.5]{charts/sharding-range-based.png}
   \caption{Sơ đồ không gian giá trị khóa shard được chia thành các phạm vi hoặc khối nhỏ hơn.}
   \end{figure}
 
@@ -128,7 +128,7 @@ Mỗi vùng bao gồm một hoặc nhiều dải giá trị khóa shard. Mỗi p
 \begin{figure}[h!]
 \centering
 \captionsetup{justification=centering,margin=1cm}
-  	\includegraphics[scale=1]{sharded-cluster-zones.bakedsvg.svg}
+  	\includegraphics[scale=0.5]{charts/sharded-cluster-zones.png}
   \caption{Sơ đồ phân bố dữ liệu dựa trên các vùng trong một cụm shard}
   \end{figure}
 
