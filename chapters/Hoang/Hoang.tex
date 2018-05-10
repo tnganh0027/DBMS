@@ -89,27 +89,27 @@ db.collection_name.find()
 xuất tất cả document trong collection \textit{collection\_name}.
 \item
 \begin{lstlisting}
-db.collection_name.find(filter)
+db.collection_name.find(query)
 \end{lstlisting}
-xuất tất cả document trong collection \textit{collection\_name} thỏa \textit{filter}.
+xuất tất cả document trong collection \textit{collection\_name} thỏa điều kiện \textit{query}.
 \end{itemize}
 \subsubsection{Update}
 \begin{itemize}
 \item
 \begin{lstlisting}
-db.colletion_name.updateOne(filter, action)
+db.colletion_name.updateOne(query, action)
 \end{lstlisting}
-thực hiện update được mô tả trong \textit{action} trên document thỏa \textit{filter} trong \textit{collection\_name}. Nếu có nhiều hơn 1 document thỏa filter thì sẽ thực hiện \textit{action} trên document đầu tiền thỏa.
+thực hiện update được mô tả trong \textit{action} trên document thỏa điều kiện \textit{query} trong \textit{collection\_name}. Nếu có nhiều hơn 1 document thỏa \textit{query} thì sẽ thực hiện \textit{action} trên document đầu tiền thỏa.
 \item
 \begin{lstlisting}
-db.colletion_name.updateMany(filter, action)
+db.colletion_name.updateMany(query, action)
 \end{lstlisting}
-thực hiện update được mô tả trong \textit{action} trên tất cả document thỏa \textit{filter} trong \textit{collection\_name}.
+thực hiện update được mô tả trong \textit{action} trên tất cả document thỏa điều kiện \textit{query} trong \textit{collection\_name}.
 \item
 \begin{lstlisting}
-db.colletion_name.replaceOne(filter, document)
+db.colletion_name.replaceOne(query, document)
 \end{lstlisting}
-thay thế document thỏa \textit{filter} trong \textit{collection\_name} bằng \textit{document}. Nếu có nhiều hơn 1 document thỏa \textit{filter} trong collection thì thực hiện thay thế trên document đầu tiên thỏa.
+thay thế document thỏa \textit{query} trong \textit{collection\_name} bằng \textit{document}. Nếu có nhiều hơn 1 document thỏa \textit{query} trong collection thì thực hiện thay thế trên document đầu tiên thỏa.
 \end{itemize}
 \subsubsection{Delete}
 \begin{itemize}
@@ -125,14 +125,57 @@ db.collection_name.drop()
 dùng để drop collection có tên \textit{collection\_name}
 \item
 \begin{lstlisting}
-db.colletion_name.deleteOne(filter)
+db.colletion_name.deleteOne(query)
 \end{lstlisting}
-xóa một document thỏa \textit{filter} trong \textit{collection\_name}. Nếu có nhiều hơn 1 document thỏa \textit{filter} trong collection thì xóa document đầu tiên thỏa.
+xóa một document thỏa \textit{query} trong \textit{collection\_name}. Nếu có nhiều hơn 1 document thỏa \textit{query} trong collection thì xóa document đầu tiên thỏa.
 \item
 \begin{lstlisting}
 db.colletion_name.deleteMany(filter)
 \end{lstlisting}
 xóa tất cả document thỏa \textit{filter} trong \textit{collection\_name}.
+\end{itemize}
+\subsection{Câu Query}
+Câu query đóng vai trò quan trọng trong việc tìm kiếm, truy xuất, cập nhật Database. MongoDB cung cấp bộ quy tắc để viết các câu query tiện lợi, nhất quán.
+\subsubsection{Cơ bản nhất}
+\begin{lstlisting}
+{<field>:<value>, ...}
+\end{lstlisting}
+Câu query cơ bản nhất trong MongoDB chính là so sánh bằng. Câu query cấu tạo từ các cặp khóa-trị với biểu diễn mối quan hệ trường và giá trị của trường, câu query sẽ truy xuất tất cả các document có trường được định trong \textit{<field>} có giá trị \textit{<value>}. Do câu query có cấu tạo là tập hợp nhiều cặp khóa-trị nên có bản chất \textit{AND}. Ví dụ như:
+\begin{lstlisting}
+db.NhanVien.find({luong:2000, mspb: "P01"})
+\end{lstlisting}
+câu query trên sẽ giúp phép find truy xuất tất cả các Nhân viên có \textit{lương} là 2000 và \textit{mspb} là 
+"P01". Phép find cùng câu query trên tương tự như câu query trong SQL:
+\begin{lstlisting}
+select * from NhanVien where luong=2000 and mspb="P01"
+\end{lstlisting}
+
+Bên cạnh đó, ở \textit{\textbf{<value>}} ta có thể thay giá trị cụ thể bằng các kết hợp toán tử so sánh, OR, AND,... để phức tạp hóa câu query nhằm phục vụ mục đích của mình.
+\subsubsection{Các toán tử so sánh để chọn}
+Dùng các toán tử để chọn từ dữ liệu các document có giá trị trường \textit{<field>} thỏa:
+\begin{itemize}
+\item \lstinline!$eq! bằng. cú pháp: \lstinline!<field> : {$eq: <value>}! \\* ví dụ như \lstinline!db.NhanVien.find({luong: {$eq: 2000}})! truy xuất tất cả nhân viên có lương 2000. Tuy nhiên câu query trên cũng tương đương bản rút gọn ta đã tìm hiểu qua ở phần trước \lstinline!db.NhanVien.find({luong:2000})!.
+\item \lstinline!$ne! không bằng. cú pháp: \lstinline!<field> : {$ne: <value>}! \\* ví dụ như \lstinline!db.NhanVien.find({luong: {$ne: 2000}})! truy xuất tất cả nhân viên có lương khác 2000.
+\item \lstinline!$gt! lớn hơn. cú pháp: \lstinline!<field> : {$gt: <value>}! \\* ví dụ như \lstinline!db.NhanVien.find({luong: {$gt: 2000}})! truy xuất tất cả nhân viên có lương lớn hơn 2000.
+\item \lstinline!$gte! lớn hơn hoặc bằng. cú pháp: \lstinline!<field> : {$gte: <value>}! \\* ví dụ như \lstinline!db.NhanVien.find({luong: {$gte: 2000}})! truy xuất tất cả nhân viên có lương lớn hơn hoặc bằng 2000.
+\item \lstinline!$lt! nhỏ hơn. cú pháp: \lstinline!<field> : {$lt: <value>}! \\* ví dụ như \lstinline!db.NhanVien.find({luong: {$lt: 2000}})! truy xuất tất cả nhân viên có lương nhỏ hơn 2000.
+\item \lstinline!$lte! nhỏ hơn hoặc bằng. \\* ví dụ như \lstinline!db.NhanVien.find({luong: {$lte: 2000}})! truy xuất tất cả nhân viên có lương nhỏ hơn hoặc bằng 2000.
+\item \lstinline!$in! giá trị trong danh sách các giá trị được định. cú pháp: \lstinline!<field> : {$in: [<value0>, <value1>, ..., <valueN>]}! \\* ví dụ như \lstinline!db.NhanVien.find({mspb: {$in: ["P01","P04"]}})! truy xuất tất cả nhân viên thuộc phòng ban có mã số	trong danh sách \lstinline!["P01","P04"]! được định. Tác vụ trên tương đương câu query trong SQL \lstinline!select * from NhanVien where mspb in ("P01","P04")!.
+\item \lstinline!$nin! giá trị không nằm trong danh sách các giá trị đã được định. cú pháp: \lstinline!<field> : {$nin: [<value0>, <value1>, ..., <valueN>]}! \\* ví dụ như \lstinline!db.NhanVien.find({mspb: {$nin: ["P01","P04"]}})! truy xuất tất cả nhân viên không thuộc phòng ban có mã số	trong danh sách \lstinline!["P01","P04"]! được định.
+\end{itemize}
+\subsubsection{Các toán tử logic}
+Ngoài các toán tử so sánh toán học, MongoDB còn cung cấp các toán tử logic như:
+\begin{itemize}
+\item \lstinline!$and! cú pháp: \lstinline!{$and: [ {<expression0>}, {<expression1>}, ... ,{<expressionN>} ] }! với \textit{expression} là các câu điều query khác. \\* ví dụ như \lstinline!db.NhanVien.find({$and: [{luong: 2000}, {mspb:"P01"}]})! truy xuất tất cả nhân viên có lương 2000 và thuộc phòng ban có mspb "P01". Tác vụ truy xuất trên tương đương với câu query SQL \lstinline!select * from NhanVien where luong=2000 and mspb="P01"! . Ta có thể thấy nó tương đương với câu query cơ bản \lstinline!db.NhanVien.find({luong:2000},{mspb:"P01"})!.
+\item \lstinline!$or! cú pháp: \lstinline!{$or: [ {<expression0>}, {<expression1>}, ... ,{<expressionN>} ] }! \\* ví dụ như \lstinline!db.NhanVien.find({$or: [ {luong:2000}, {mspb:"P02"}]})! truy xuất tất cả nhân viên có lương 2000 hoặc thuộc phòng ban có mã số "P02".
+\item \lstinline!$not! truy xuất các document không thỏa điều kiện được định hoặc \textbf{không có trường được định}. cú pháp: \lstinline!{<field> : {$not: {<expression>}}}! với \textit{<expression>} là các cụm query bằng sử dụng toán tử toán học. \\* ví dụ như: \lstinline!db.NhanVien.find({ngay_nghi: {$not: {$gt: 3}}})! truy xuất tất cả nhân viên có ngày nghỉ \textit{bé hơn hoặc bằng} 3 hoặc \textbf{không có trường ngay\_nghi}.
+\item \lstinline!$nor! áp dụng phép toán tử logic \textbf{nor}. cú pháp: \lstinline!{$nor: [ {<expression0>}, {<expression1>}, ... ,{<expressionN>} ] }! \\* ví dụ như \lstinline!db.NhanVien.find({$nor: [ {luong: 2000}, {mspb: "P01"} ] })! truy xuất các nhân viên thỏa:
+\begin{itemize}
+\item \textit{lương} khác 2000 và \textit{mspb} khác "P01"
+\item \textit{lương} khác 2000 và không có trường \textit{mspb}
+\item không có trường \textit{lương} và \textit{mspb} khác "P01"
+\item không có cả trường \textit{lương} và trường \textit{mspb}
+\end{itemize}
 \end{itemize}
 \section{Kiến trúc lưu trữ của MongoDB} \label{sec:MongoDB.4}
 Cuối cùng, ở phần này ta sẽ đi chi tiết vào kiến trúc của MongoDB. Ta sẽ giới thiệu sơ về 2 định dạng dữ liệu JSON ở \ref{ssec:MongoDB.4.1} và BSON ở \ref{ssec:MongoDB.4.2}. Sau đó ta sẽ đi vào cốt lõi của việc lưu trữ dữ liệu của MongoDB trong phần \ref{ssec:MongoDB.4.3}.
