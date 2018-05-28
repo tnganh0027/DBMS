@@ -1,7 +1,144 @@
 \chapter{Các cơ sở dữ liệu Document store}
 
-\section{Tổng quan vê CouchDB}
-
-\section{Tổng quan vê SimpleDB}
-
+\section{Tổng quan về CouchDB}
+	\subsection{CouchDB là gì ?}
+		\begin{itemize}
+	 		\item CouchDB là một cơ sở dữ liệu dạng NoSQL mã nguồn mở database lưu trữ dữ liệu dạng document/JSON.
+	 		\item CouchDB được thiết kế nhắm tới tính dễ sử dụng và phục vụ cho môi trường web.
+		\end{itemize}
+	\subsection{Tại sao chúng ta lại cần CouchDB ?}
+		\begin{itemize}
+			\item CouchDB có API dạng RESTFul giúp cho việc giao tiếp với cơ sở dữ liệu được đơn giản.
+			\item Các RESTFul API rất trực quan và dễ thao tác.
+			\item Dữ liệu được lưu dưới cấu trúc document rất mềm dẻo, chúng ta không cần phải lo lắng về cấu trúc dữ liệu.
+			\item Map/reduce giúp việc lọc, tìm, tổng hợp dữ liệu dễ hơn bao giờ hết.
+			\item Nhân bản/đồng bộ là sức mạnh đặc biệt của CouchDB mà hiếm database nào có.
+		\end{itemize}
+	\subsection{Mô hình dữ liệu}
+		\begin{itemize}
+			\item Database là một cấu trúc dữ liệu lớn của CouchDB.
+			\item Mỗi Database là một danh sách các document độc lập.
+			\item Document bao gồm dữ liệu người dùng thao tác lẫn thông tin về phiên bản của dữ liệu để tiện việc merge dữ liệu.
+			\item CouchDB sử dụng cơ chế phiên bản hoá dữ liệu để tránh tình trạng khoá dữ liệu khi đang ghi.
+		\end{itemize}
+	 \section{Các tính năng chính}
+	  	\subsection{Lưu trữ dạng document}
+	  	 	\paragraph{CouchDB là một NoSQL database dạng document. Document là một đơn vị dữ liệu (giống như một object của Javascript), mỗi field có một tên riêng không trùng nhau, chứa các loại dữ liệu hay chữ, số, Boolean, danh sách,... Không có bất kì giới hạn nào về dung lượng hay text, số field trong một document.}
+	  	 	\paragraph{CouchDB cung cấp một RESTFul API cho việc đọc và ghi (bao gồm: thêm, sửa, xoá) document.} 
+			\paragraph{Đây là một ví dụ về document:}
+	  	 	\subparagraph{\{
+	  	 		"title":"Macbook","price": 1500,"SKU": "abcd1234"  
+	  	 		\} 
+	  	 	}
+	  	\subsection{Các thuộc tính ACID}
+	  		\paragraph{Khi dữ liệu được ghi xuống ổ cứng thì nó sẽ không bị ghi đè. Bất kì thay đổi nào(thêm, sửa, xoá) đều theo chuẩn Atomic, có nghĩa là dữ liệu sẽ được lưu lại toàn diện hoặc không được lưu lại. Database không bao giờ thêm hay sửa một phần dữ liệu. }
+			\paragraph{Hầu hết các cập nhật đều được serialized để đảm bảo tất cả người dùng có thể đọc document mà không bị chờ đợi hoặc gián đoạn.}
+		\subsection{Khả năng nén(compaction)}
+			\paragraph{Nén là một hành động giúp giải phóng dung lượng ổ cứng được sử dụng bằng cách xoá đi các dữ liệu không còn được sử dụng. Khi tiến hành nén dữ liệu ở một file thì một file mới với định dạng \textbf{.compaction} sẽ được tạo ra và dữ liệu sẽ được sao chép vào file mới này. Khi quá trình copy hoàn thành thì file cũ sẽ được xoá bỏ. Database vẫn online trong quá trình nén và các thao tác thay đổi / đọc dữ liệu vẫn diễn ra bình thường.}
+		\subsection{Views}
+			\paragraph{Dữ liệu trong CouchDB được lưu trữ trong các document. Bạn có thể tưởng tượng như một database là một table và một document là một row. Khi chúng ta muốn trình bày dữ liệu bằng nhiều góc khác nhau thì chúng ta cần một phương pháp để filter, tổ chức để hiển thị kết quả cuối cùng.}
+			\paragraph{Để giải quyết vấn đề này, CouchDB sử dụng mô hình View. View là một phương pháp tổng hợp dữ liệu trong các document ở một database. Các View được build động và không ảnh hưởng đến dữ liệu đã ghi ở document nên chúng ta có thể có bao nhiêu View tuỳ ý và tuỳ vào nhu cầu trình bày dữ liệu.}
+\section{Tổng quan về SimpleDB}
+	\subsection{SimpleDB là gì ?}
+		\begin{itemize}
+			\item SimpleDB (hay Amazon SimpleDB)là một kho lưu trữ dữ liệu noSQL giảm thiểu về công việc quản lý dữ liệu.
+			\item Các nhà phát triển chỉ lưu trữ và truy vấn dữ liệu thông qua các yêu cầu Web Services và Amazon SimpleDB sẽ thực hiện việc đó.
+			\item Với Amazon SimpleDB, bạn có thể tập trung phát triển ứng dụng mà không cần phải quan tâm về vấn đề kết cấu, duy trì phần mềm, quản lý schema và index.
+		\end{itemize}
+\section{Tại sao chúng ta lại cần SimpleDB ?}
+		\subsection{Lợi ích}
+			\paragraph{Dịch vụ cho phép bạn tập trung tất cả vào việc bổ sung giá trị cho phát triển phần mềm, hơn là việc bạn khó khăn và tốn thời gian vào việc quản lý database. Amazon SimpleDB quản lý một cách tự động cơ sở hạ tầng được cung cấp, duy trì phần cứng và phần mềm, tái tạo và index của dữ liệu.}
+			\paragraph{Nếu vấn đề nghiệp vụ của bạn bị thay đổi hoặc cải tạo ứng dụng, bạn có thể dễ dàng đưa sự thay đổi vào trong Amazon SimpleDB mà không cần phải quan tâm về việc làm "vỡ" kết cấu schema - đơn giản chỉ cần thêm vào thuộc tính khác vào trong tập dữ liệu Amazon SimpleDB của bạn khi cần đến. }	
+			\paragraph{Amazon SimpleDB cung cấp tổ chức truy cập để lưu trữ và hàm truy vấn một cách truyền thống được sử dụng hoàn toàn bằng nhóm quan hệ dữ liệu (relational database cluster). Dịch vụ cho phép bạn có thể nhanh chóng thêm dữ liệu và dễ dàng truy vấn, sửa dữ liệu thông qua lệnh gọi API dễ dàng. }
+			\paragraph{Amazon SimpleDB cung cấp một điểm cuối https để chắc chắn việc bảo mật, thông báo được mã hoá giữa ứng dụng của bạn hoặc khách hàng hoặc domain của bạn. Thêm vào đó, thông qua việc thông nhất với AWS Identity và quản lý truy cập, bạn có thể thiết lập user hoặc điều khiển group-level truy cập để đặc tả miền SimpleDB và toán tử.  }
+\section{Một số chức năng Use Cases}
+	\subsection{Loggin}
+		\begin{itemize}
+			\item Monitoring or tracking
+			\item Metering
+			\item Trend of business analysis
+			\item Auditing
+			\item Archival or regulation compliance
+		\end{itemize}
+	\subsection{Online games}
+		\begin{itemize}
+			\item User scores and achievements
+			\item User settings or preferences
+			\item Information about player's items or user-generated content
+			\item Game session sate
+		\end{itemize}
+	\subsection{Indexing Amazon S3 Object Metadata}
+		\paragraph{Nhiều lập trình viên dùng Amazon SimpleDB kết hợp với Amazon Simple Storage Service (Amazon S3). Amazon SimpleDB có thể được dùng để lưu trữ con trỏ tới nơi đối tượng Amazon S3 và thông tin chi tiết về đối tượng đó (metadata), bằng cách bổ sung Amazon S3 với nhiều hàm truy vấn của database. Đối với lập trình viên đang lưu trữ số lượng lớn đối tượng trong Amazon S3, Amazon SimpleDB sẽ linh động, biến đổi, không tốn nhiều cách để lưu trữ đối tượng metadata trong việc "offlanding" trên việc quản lý có liên quan đến việc vận hành cơ sở dữ liệu. Một số câu lệnh ví dụ phổ biến của đối tượng metadata có thể dễ dàng lưu trữ, indexed, và truy vấn trong Amazon SimpleDB bao gồm:  }
+		\begin{itemize}
+			\item Data type or format (image, video, document)
+			\item User associations or access designations
+			\item Dates the object was created, accessed, or modified
+			\item Name or location of related objects
+			\item User ratings and comments
+			\item Subject or category tags
+			\item Geolocation tag
+		\end{itemize}
 \section{So sánh}
+	\begin{tabu} to 1.2\textwidth { | X[l] | X[l] | X[l] | X[l] | }
+ 		\hline
+ 		Name &Amazon SimpleDB& CouchDB& MongoDB \\
+ 		\hline
+ 		Mô tả & Dịch vụ dữ liệu đơn giản tạo bởi Amazone, với dữ liệu được lưu trên Amazon Cloud . &  Là một native JSON - document, sự rộng rãi từ phân phối tổng thể nhóm server cho đến điện thoại.& Một trong những lưu trữ document nổi tiếng \\
+		\hline
+		Primary database model
+		&
+		Key-value store
+		&
+		Document store
+		&
+		Document store \\
+		\hline 
+		Secondary database model
+		&
+		...
+		&
+		...
+		&
+		Key-value store \\
+		\hline
+		Cloud-based
+		&
+		yes
+		&
+		no
+		&
+		no \\
+		\hline
+		User concepts
+		&
+		Access rights for users and roles can be defined via the AWS Identity and Access Management
+		&
+		Access right for users can be defined per database
+		&
+		Access rights for user and roles \\
+		\hline
+		Triggers
+		&
+		no
+		&
+		yes
+		&
+		no \\
+		\hline 
+		Server-side scripts
+		&
+		no
+		&
+		View functions in Javascript
+		&
+		Javascript \\
+		\hline
+		Partitioning methods
+		&
+		none
+		&
+		Sharding
+		&
+		Sharding \\
+		\hline
+	\end{tabu}
